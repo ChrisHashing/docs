@@ -1,0 +1,140 @@
+# Quick Start Guide
+
+Welcome to the WTTP Quick Start guide! This will walk you through the basic setup and usage of the `wttp-handler` to fetch data from Web Contracts deployed on the blockchain.
+
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following:
+
+- **Node.js** installed on your machine (version 12 or higher).
+- **npm** (Node Package Manager) or **yarn** installed to manage your dependencies.
+- A Web Contract (WC) deployed on the blockchain (can be any supported network like Ethereum, Polygon, etc.).
+
+---
+
+## Step 1: Installation
+
+To begin using the `wttp-handler`, you need to install it in your Node.js project. 
+
+### Using npm:
+
+```bash
+npm install wttp-handler
+```
+
+### Using yarn:
+
+```bash
+yarn add wttp-handler
+```
+## Step 2: Setup and Configuration
+
+Once you have the wttp-handler installed, you can start integrating it into your project. Here is an example of how to make a basic GET request using the handler:
+
+```bash 
+
+// Import the wttp handler
+const { wttp } = require('wttp-handler');
+
+async function main() {
+    try {
+        // Define the Web Contract address and file you want to fetch
+        const contractAddress = '0x30Ad498F991cc048f0dF45E41F2cC13e153CA7AE';
+        const filePath = 'index.html';  // Path to the file in your Web Contract
+
+        // Construct the WTTP URL
+        const url = `wttp://${contractAddress}/${filePath}`;
+
+        // Make a GET request using wttp.fetch()
+        const response = await wttp.fetch(url);
+
+        // Log the response status and headers
+        console.log("Response Status:", response.status);
+        console.log("Response Headers:", response.headers);
+
+        // Log the content of the response
+        const content = await response.text();
+        console.log("Response Content:", content);
+
+        // Optionally, log the Content-Type header
+        const contentType = response.headers.get('content-type');
+        console.log("Content-Type:", contentType);
+
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+
+// Execute the function to fetch data
+main().catch(console.error);
+
+```
+
+## Step 3: Making Requests
+
+GET Request
+You can perform a simple GET request to fetch data from a Web Contract using the URL format:
+
+```bash 
+wttp://<contract-address>/<path-to-file>
+```
+
+Example:
+
+```bash
+const response = await wttp.fetch('wttp://0x30Ad498F991cc048f0dF45E41F2cC13e153CA7AE/index.html');
+```
+
+## PUT Request (Post Data to Blockchain)
+
+To post data to the blockchain using a PUT request, you can follow the example below. This is useful for updating content or uploading new data to the Web Contract:
+
+```bash 
+// Define the Web Contract target address and the data to post
+const contract = { target: '0x30Ad498F991cc048f0dF45E41F2cC13e153CA7AE' }; // Replace with your contract address
+const path = 'datapoint/chunk'; // Replace with the path for the chunk
+const chunk = '<html><body>New data for the Web Contract</body></html>'; // Replace with your data
+const signer = { address: '0xYourSignerAddress' }; // Replace with your signer address
+
+// Perform a PUT request using wttp.fetch()
+console.log(`wttp://${contract.target}/index.html`);
+const response = await wttp.fetch(`wttp://${contract.target}/${path}`, {
+    method: "PUT",
+    headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Location": "datapoint/chunk",
+        "Publisher": signer.address
+    },
+    body: chunk,
+    signer: signer
+});
+
+console.log("PUT Request Status:", response.status);
+console.log("Response Headers:", response.headers);
+console.log("Response Content:", await response.text());
+
+```
+
+## Step 4: Error Handling
+
+Make sure to implement error handling to catch any issues during the request process, such as network errors, invalid URLs, or inaccessible files:
+
+```bash
+try {
+    const response = await wttp.fetch('wttp://invalid-address/index.html');
+    // Further processing...
+} catch (error) {
+    console.error("Request failed:", error);
+}
+```
+
+## Step 5: Going Further
+
+Now that you’ve completed the basic setup, you can explore further features of the WTTP handler, such as chunked responses, redirect handling, and support for secure connections (WTTPS).
+
+Conclusion
+You’ve now learned how to use the wttp-handler to fetch and post data from Web Contracts! WTTP opens up new possibilities for decentralized data delivery, and with the TW3 Browser, you can experience it firsthand.
+
+Feel free to explore the API and advanced features to make the most out of WTTP in your Web3 applications.

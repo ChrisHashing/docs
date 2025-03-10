@@ -1,0 +1,175 @@
+
+# WTTP (Web3 Transfer Protocol) Quick Start Guide
+
+Welcome to the WTTP Quick Start guide! This document will walk you through the steps to deploy your Web3 site, upload files, and fetch data from the blockchain using the WTTP protocol.
+
+---
+
+## Prerequisites
+
+Before getting started, make sure you have the following installed and set up:
+
+- **Node.js** (v12 or higher)
+- **npm** or **yarn**
+- **Remix IDE** or **Hardhat** for deploying smart contracts
+- **Ethers.js** and **dotenv** for interacting with the blockchain
+
+---
+
+## Step 1: Deploy Your Site Contract
+
+To deploy your WTTP-based site contract, use the following Solidity code:
+
+### Solidity Code
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@tw3/solidity/contracts/wttp/TW3Site.sol";
+
+contract MyFirstSite is TW3Site {
+    constructor(
+        string memory _name, 
+        string memory _description, 
+        string memory _tags
+    ) TW3Site(_name, _description, _tags) {}
+}
+```
+
+### Deployment Steps
+
+1. Open **Remix IDE** or your preferred development environment.
+2. Paste the above code into a new file (e.g., `MyFirstSite.sol`).
+3. Compile the contract.
+4. Deploy the contract to the **Sepolia Testnet** or another supported blockchain network.
+5. Note the deployed contract address.
+
+---
+
+## Step 2: Install the WTTP Handler
+
+Install the WTTP handler library to interact with your Web Contract.
+
+### Using npm
+```bash
+npm install wttp-handler
+```
+
+### Using yarn
+```bash
+yarn add wttp-handler
+```
+
+---
+
+## Step 3: Upload Site Files
+
+Use the `PUT` method to upload your site files to the blockchain.
+
+### Example Script
+
+Create a new file (e.g., `upload-site.js`) and use the following code:
+
+```javascript
+const { wttp } = require('wttp-handler');
+const { Wallet } = require('ethers');
+require('dotenv').config();
+
+// Replace with your deployed contract address
+const SITE_ADDRESS = "0x..."; 
+
+// Create a new wallet signer using your private key
+const signer = new Wallet(process.env.PRIVATE_KEY);
+
+async function uploadSite() {
+    try {
+        const response = await wttp.fetch(`wttp://${SITE_ADDRESS}/index.html`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "text/html; charset=utf-8",
+                "Content-Location": "datapoint/chunk",
+                "Publisher": signer.address
+            },
+            body: "<html><body>Welcome to my WTTP site!</body></html>",
+            signer: signer
+        });
+
+        console.log("Upload Response Status:", response.status);
+    } catch (error) {
+        console.error("Error uploading site:", error);
+    }
+}
+
+uploadSite().catch(console.error);
+```
+
+### Steps
+
+1. Replace `SITE_ADDRESS` with your deployed contract address.
+2. Add your private key to a `.env` file:
+   ```env
+   PRIVATE_KEY=your_private_key_here
+   ```
+3. Run the script:
+   ```bash
+   node upload-site.js
+   ```
+
+---
+
+## Step 4: Fetch Site Files
+
+Use the `GET` method to retrieve your site files from the blockchain.
+
+### Example Script
+
+Create a new file (e.g., `fetch-site.js`) and use the following code:
+
+```javascript
+const { wttp } = require('wttp-handler');
+
+async function fetchSite() {
+    try {
+        // Replace with your deployed contract address
+        const SITE_ADDRESS = "0x...";
+        
+        const response = await wttp.fetch(`wttp://${SITE_ADDRESS}/index.html`);
+
+        if (response.ok) {
+            const content = await response.text();
+            console.log("Site Content:", content);
+        } else {
+            console.error("Failed to fetch site. Status:", response.status);
+        }
+    } catch (error) {
+        console.error("Error fetching site:", error);
+    }
+}
+
+fetchSite().catch(console.error);
+```
+
+### Steps
+
+1. Replace `SITE_ADDRESS` with your deployed contract address.
+2. Run the script:
+   ```bash
+   node fetch-site.js
+   ```
+
+---
+
+## Step 5: Explore Further
+
+Congratulations! You’ve successfully deployed a WTTP-based site, uploaded content, and fetched it back. Explore additional WTTP features like:
+- **Chunked Storage** for large files
+- **Content Addressing** for efficient data retrieval
+- **Role-Based Permissions** for site management
+
+For detailed documentation, visit the [WTTP Protocol Repository](https://github.com/technicallyweb3/wttp).
+
+---
+
+⚠️ **Security Note:** Always create a new wallet for testing purposes and never expose your private keys.
+

@@ -1,0 +1,149 @@
+# WTTP URL Structure
+
+The WTTP protocol leverages a **Master Chain** to index Web Contracts globally. This Master Chain holds information or redirection links to Web Contracts hosted on different blockchains. WTTP browsers, such as the TW3 Browser, begin by querying the Master Chain to locate the Web Contract’s content. However, users can also directly query specific blockchains using a custom URL format.
+
+## Key Components of a WTTP URL
+
+A WTTP URL follows a specific structure that ensures secure access to content stored in Web Contracts. The basic format is:
+
+wttp://contract_address:chain_id/file_path
+
+### Breakdown of the URL:
+1. **Protocol (`wttp://`)**:
+    `wttp://` is the protocol used for secure Web Contract access.
+   
+2. **Contract Address (`<contract_address>`)**:
+    This is the address of the Web Contract on a specific blockchain. Each Web Contract deployed on a blockchain has a unique contract address.
+   
+3. **Chain Identifier (`<chain_id>`)**:
+    The chain identifier or alias refers to the specific blockchain where the Web Contract resides (e.g., `ethereum` for Ethereum Mainnet, `polygon` for Polygon Mainnet, etc.).
+   
+4. **File Path (`<file_path>`)**:
+    The file path indicates the specific resource or file within the Web Contract to be retrieved. This path is similar to a URL path, specifying directories and filenames (e.g., `index.html`, `about/index.html`).
+
+### Example of WTTP URL
+
+wttp://0xa3F64DF35803Fd9ff28837043fa902B98168fe00:eth/index.html
+
+#### Breakdown of the Example:
+- **Protocol**: `wttp://` - Secure access to the Web Contract.
+- **Contract Address**: `0xa3F64DF35803Fd9ff28837043fa902B98168fe00` - The Web Contract address on the Ethereum blockchain.
+- **Chain Identifier**: `eth` - Refers to the Ethereum blockchain.
+- **File Path**: `/index.html` - The specific file being requested from the Web Contract.
+
+This URL would be used by a WTTP-enabled browser to query the Ethereum blockchain at the specified address for the `index.html` file.
+
+## Custom URL Structure
+
+WTTP offers familiarity in how users structure their URLs. Below is the URL format for querying resources stored on Web Contracts:
+
+wttp://[contract address/domain]:[network]/[path]?[params]
+wttp://tw3.eth:ethereum/about?email=technicallyweb3@gmail.com
+
+- **`<contract_address>`**: The address of the Web Contract on the blockchain.
+- **`<chain_id>`**: The ID or alias of the blockchain (e.g., `eth` for Ethereum, `pol` for Polygon).
+- **`<file_path>`**: The path to the specific resource or file in the Web Contract (e.g., `index.html`, `about/index.html`).
+
+### Example 1: Master Chain Contract using ENS
+
+wttp://technicallyweb3.eth/index.html
+
+
+This would first resolve the ens address and then fetch the data from the master chain at the resolved address `0xa3F64DF35803Fd9ff28837043fa902B98168fe00` and request the `index.html` file.
+
+### Example 2: Using Contract Address
+
+wttp://0x6D1e3f6de6b1E215e48A1d9155B762D272A9BFC2/about/index.html
+
+This would query the Master chain at the address `0x6D1e3f6de6b1E215e48A1d9155B762D272A9BFC2` and request the `index.html` file located in the `/about` directory.
+
+### Example 3: Using Ethereum Contract
+
+wttp://0xa3F64DF35803Fd9ff28837043fa902B98168fe00:ethereum/about/contact.html/?userID=admin123
+
+This would query the Ethereum blockchain at the address `0xa3F64DF35803Fd9ff28837043fa902B98168fe00` and request the `contact.html` file within the `/about` directory with the parameter `userID=admin123`.
+
+## Special URL Formats
+
+### Smart Contract Redirection
+
+#### Prerequisite:
+Use the `DEFINE` function to set the redirect code and location in the header of a wttp smart contract. 
+
+Smart Contracts can redirect users to other resources or Smart Contracts. This is accomplished by linking the contract to another chain or contract, which can be specified in the URL. The `file_path` can also be omitted in certain cases, defaulting to a specified landing page or resource.
+
+```javascript
+await handler.fetch(`wttp://0xa3F64DF35803Fd9ff28837043fa902B98168fe00:eth/`, {
+    method: Method.DEFINE,
+    headers: {
+        'Redirect-Code': 301,
+        'Redirect-Location': '/index.html'
+    }
+});
+```
+This tells the client that it should retrieve the resource at `index.html` and remember this for future requests because of the `301` code.
+
+#### Example:
+
+wttp://0xa3F64DF35803Fd9ff28837043fa902B98168fe00:ethereum/
+
+In this case, the URL queries the root directory of the Smart Contract deployed at `0xa3F64DF35803Fd9ff28837043fa902B98168fe00` on the Ethereum blockchain. Making this request will result in a `301` redirect to `index.html` which the application would follow to `wttp://0xa3F64DF35803Fd9ff28837043fa902B98168fe00:ethereum/index.html`.
+
+### Querying a Specific Contract Function
+
+WTTP Smart Contracts may expose specific external smart contract functions (e.g., `transfer()`, `mint()`) that return dynamic content or change the states of the smart contract. Users or Developers can create routes to these smart contract functions using WTTP.
+
+#### Prerequisite:
+Use the `PUT` function to set the query url format in the body of a wttp smart contract resource. 
+
+```javascript
+await handler.fetch(`wttp://0xa3F64DF35803Fd9ff28837043fa902B98168fe00:ethereum/bayctransferfrom`, {
+    method: Method.PUT,
+    headers: {
+        'Content-Type': 'contract/write;utf-8',
+        'Content-Location': 'datapoint/chunk',
+        'Publisher': Signer.address
+    },
+    body: 'transferFrom(address from,address to,uint id)@0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D'
+    signer: Signer
+});
+```
+
+#### Example:
+
+wttp://0xa3F64DF35803Fd9ff28837043fa902B98168fe00:ethereum/bayctransferfrom/?to=0x7285e8F0186a0A41E23ceF7603AD7b80A2d5a793&from=0xd66F8eAf84b11654a19126a98a3F55B960846Dd8&id=420
+
+This would call the `transferFrom()` function of the BAYC nft contract passing in the parameters `from`,`to` and `id` from the URL which is required and passed on to the smart contract. In this instance the signer would have to be `0xd66F8eAf84b11654a19126a98a3F55B960846Dd8` or be authorized via the `approve` function to transfer token `420` on behalf of the owner.
+
+## Chain Identifiers
+
+The `<chain_id>` field specifies which blockchain to query. Below are common chain identifiers used in WTTP URLs:
+
+- `ethereum`: Ethereum blockchain
+- `polygon`: Polygon blockchain
+- `sepolia`: Binance Smart Chain
+- `avalanche`: Avalanche blockchain
+- `fantom`: Solana blockchain
+- `optimism`: Optimism Smart Chain
+- `base`: Base blockchain
+- `arbitrum`: Arbitrum blockchain
+- `aves`: Aves blockchain
+
+
+Developers can use any supported blockchain identifier, allowing WTTP to be compatible across various blockchain ecosystems.
+
+## Summary of URL Structure
+
+The WTTP URL structure provides an efficient and secure method of querying Web Contracts for resources stored on different blockchains, storage protocols and using custom smart contract backends. The structure is easy to understand and familiar, allowing developers and users to access resources across multiple chains and protocols using a consistent format.
+
+### Recap of Key Components:
+1. **Protocol**: `wttp://` (WTTP Protocol)
+2. **Contract Address**: Unique address of the Web Contract
+3. **Chain Identifier**: Specifies the blockchain (e.g., `ethereum`, `polygon`, `base`)
+4. **File Path**: Path to the resource or file within the Web Contract (e.g., `index.html`, `about/index.html`)
+
+By following this structure, WTTP browsers and applications can efficiently locate and retrieve content from Web Contracts deployed across various blockchains, ensuring seamless interaction with decentralized applications (dApps).
+
+## Conclusion
+
+The WTTP URL format provides a standardized and secure method for interacting with decentralized Web Contracts across multiple blockchains. With a flexible structure that can accommodate different types of content, from static files to dynamic contract functions, WTTP allows developers to build decentralized applications that leverage blockchain technology for distributed content delivery.

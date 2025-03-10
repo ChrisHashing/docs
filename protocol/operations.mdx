@@ -1,0 +1,106 @@
+# Supported Operations
+
+The WTTP (Web3 Transfer Protocol) supports a variety of operations for managing decentralized web resources. These operations are designed to enable resource storage, retrieval, and management in a decentralized and secure manner using blockchain technology. Below are the key operations supported by the WTTP protocol and handler.
+
+## Request Methods
+
+### 1. `GET`
+The `GET` method is used to retrieve a resource stored within a Web Contract. This method is similar to standard HTTP GET requests.
+
+#### Example:
+```javascript
+const getResponse = await wttp.fetch(`wttp://${SITE_ADDRESS}/index.html`);
+const content = await getResponse.text();
+console.log("Content:", content);
+
+```
+
+### 2. `PUT`
+
+The `PUT` method is used to create or replace a resource. When this method is called, it stores the provided content at the specified resource location.
+
+#### Example:
+```javascript
+const putResponse = await wttp.fetch(`wttp://${SITE_ADDRESS}/index.html`, {
+    method: "PUT",
+    headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Location": "datapoint/chunk",
+        "Publisher": signer.address
+    },
+    body: "<html><body>Hello Web3!</body></html>",
+    signer: signer
+});
+console.log("PUT Response:", putResponse.status);
+
+
+```
+
+### 3. `PATCH`
+
+The `PATCH` method is used to partially update an existing resource. It is commonly used for updating specific parts of large resources, such as updating a chunk of a file.
+
+#### Example:
+```javascript
+const patchResponse = await wttp.fetch(`wttp://${SITE_ADDRESS}/index.html`, {
+    method: "PATCH",
+    headers: {
+        "Content-Type": "text/html; charset=utf-8"
+    },
+    body: "<html><body>Updated Web3 Content!</body></html>",
+    signer: signer
+});
+console.log("PATCH Response:", patchResponse.status);
+
+```
+
+### 4. `HEAD`
+
+The `HEAD` method retrieves the metadata (headers) of a resource without fetching the actual content. This is useful for checking resource properties like file size, content type, and modification status.
+
+#### Example:
+```javascript
+const headResponse = await wttp.fetch(`wttp://${SITE_ADDRESS}/index.html`, {
+    method: "HEAD"
+});
+console.log("HEAD Response:", headResponse.status);
+
+```
+
+### 5. `LOCATE`
+
+The `LOCATE` method is used to obtain information about the resource’s location, such as its availability or address in the storage system.
+
+#### Example:
+```javascript
+const locateResponse = await wttp.fetch(`wttp://${SITE_ADDRESS}/index.html`, {
+    method: "LOCATE"
+});
+console.log("LOCATE Response:", locateResponse.status);
+
+
+```
+
+# Response Status Codes
+
+Each operation returns a status code that indicates the outcome of the request. Here are the common status codes:
+
+- **200 OK**: The operation was successful.
+- **206 Partial Content**: The operation was successful, but only a partial resource is returned (e.g., for large files).
+- **304 Not Modified**: The resource has not been modified since the last request.
+- **404 Not Found**: The requested resource does not exist.
+- **405 Method Not Allowed**: The HTTP method used is not supported for the requested resource.
+- **416 Range Not Satisfiable**: The requested byte range for a resource is invalid.
+- **505 WTTP Version Not Supported**: The WTTP protocol version is not supported by the client or server.
+
+# Supported Resource Types
+
+WTTP can handle various resource types including, but not limited to:
+
+- **HTML Files**: For creating decentralized websites.
+- **JSON Files**: For storing structured data.
+- **Multimedia Files**: For decentralized media storage, including images, audio, and video files.
+
+# Conclusion
+
+WTTP provides a comprehensive suite of operations for managing decentralized web resources. With HTTP-like methods, robust content management features, role-based access control, and a built-in royalty system, WTTP enables the creation and management of decentralized websites and applications.

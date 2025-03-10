@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "WTTP Documentation",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -11,69 +11,52 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Home",
         "groups": [
           {
             "group": "Get Started",
             "pages": [
-              "introduction",
-              "quickstart",
-              "development"
+              "introduction"
             ]
           },
           {
-            "group": "Essentials",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
+            "group": "Get Started2",
+            "pages":[
+              "introductions/overview"
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "Protocol",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "protocol/architecture",
+              "protocol/url_structure",
+              "protocol/operations"
+            ]
+          },
+          {
+            "group": "References",
+            "pages": [
+              "references/glossary",
+              "references/comparison"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "tools/troubleshooting",
+              "tools/cli"
+            ]
+          },
+          {
+            "group": "Community",
+            "pages": [
+              "community/contributing",
+              "community/support"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",

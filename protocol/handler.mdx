@@ -1,0 +1,158 @@
+# WTTP Handler Implementation
+
+The **WTTP Handler** is a client library that allows JavaScript/TypeScript applications to interact using the WTTP protocol. It provides a **fetch-like API** for performing read and write operations on decentralized web resources, enabling seamless integration with WTTP sites hosted on various blockchains.
+
+This page provides an overview of the WTTP handler implementation, installation steps, usage, and examples to help developers get started with integrating the WTTP protocol into their applications.
+
+## Installation
+
+To install the WTTP Handler, use npm or yarn:
+
+```bash
+npm install wttp-handler
+
+```
+
+Alternatively, you can use yarn:
+
+```bash
+yarn add wttp-handler
+
+```
+## Setting Up the Environment
+
+Before running the WTTP Handler script, you need to configure a .env file with your private key. The private key will be used to sign transactions when writing data to the blockchain.
+
+- Create a .env file in the root of your project.
+- Add the following configuration to the .env file:
+
+### ⚠️ Create a new account only funded with what's necessary for testing! Don't use your main account
+PRIVATE_KEY=your_private_key_here
+
+Make sure to replace your_private_key_here with the private key for your testing account.
+
+# Usage
+
+The WTTP Handler provides a simple API that mimics the behavior of the traditional fetch API, with some additional features to handle blockchain interactions. The core function of the handler is wttp.fetch(), which supports HTTP-like methods such as GET, PUT, PATCH, and more.
+
+## Basic Script Example
+Below is a basic script that demonstrates how to interact with a WTTP site using the handler.
+
+- Create a new file called my-site.js.
+
+- In my-site.js, add the following code:
+
+```bash 
+const { wttp } = require('wttp-handler');
+const { Wallet } = require('ethers');
+require('dotenv').config();
+
+// Replace with your deployed contract address
+const SITE_ADDRESS = "0x..."; 
+
+// Create a new account for testing and add its private key to .env
+const signer = new Wallet(process.env.PRIVATE_KEY);
+
+async function main() {
+    // Write content
+    const putResponse = await wttp.fetch(`wttp://${SITE_ADDRESS}/index.html`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "Content-Location": "datapoint/chunk",
+            "Publisher": signer.address
+        },
+        body: "<html><body>Hello Web3!</body></html>",
+        signer: signer
+    });
+    console.log("PUT Response:", putResponse.status);
+
+    // Read content
+    const getResponse = await wttp.fetch(`wttp://${SITE_ADDRESS}/index.html`);
+    const content = await getResponse.text();
+    console.log("Content:", content);
+}
+
+main().catch(console.error);
+
+```
+
+Explanation:
+
+- **wttp.fetch()**: This function is used to send requests to a WTTP-enabled Web Contract.
+  - **method**: HTTP method (e.g., "GET", "PUT", "PATCH", etc.).
+  - **headers**: Optional headers for resource management, such as Content-Type and Publisher.
+  - **body**: The content to be uploaded when using methods like PUT or PATCH.
+  - **signer**: The wallet used to sign the request (required for PUT, PATCH, DELETE and DEFINE).
+- The script demonstrates both writing (PUT) and reading (GET) content to and from the Web Contract using WTTP.
+
+## Running the Script
+
+Once you have configured the .env file and created the script, you can run the script using Node.js:
+
+```bash 
+node my-site.js
+```
+This will execute the script and display the responses in your terminal.
+
+# Core Features of WTTP Handler
+
+The WTTP Handler offers several features that make it easy to interact with Web Contracts:
+
+## HTTP-like Methods
+
+The handler supports several HTTP methods commonly used for resource management:
+
+- GET: Retrieve resources stored in the Web Contract.
+- PUT: Create or replace resources.
+- PATCH: Update multi-part resources.
+- HEAD: Retrieve resource metadata.
+- LOCATE: Get resource location information.
+- DEFINE: Sets the header for the given resource.
+- DELETE: Deletes the resource if it exist.
+
+## Content-Type and Charset Handling
+
+The handler supports different content types and charsets for content handling, allowing you to upload a variety of resources such as HTML, JSON, and more. The content type is specified in the request headers.
+
+## Range Requests
+
+The handler allows range requests for large resources. This helps manage large files by fetching specific chunk ranges, optimizing bandwidth usage and performance.
+
+
+## Multi-part Resource Support
+
+The handler supports multi-part resources, enabling the upload and management of large files that are split into smaller chunks. This ensures efficient storage and retrieval of large data.
+
+## Caching and ETags
+
+To optimize performance, the handler supports cache control and ETags, which allows clients to cache resources and use conditional requests to reduce unnecessary data transfers.
+
+# Advanced Usage
+
+## Uploading Large Files
+
+For large files, use the chunking mechanism supported by the WTTP protocol. The handler supports uploading large files in smaller chunks and recombining them on the server side.
+
+## Custom Headers
+You can use custom headers to interact with the WTTP handler. Examples include:
+
+ - Publisher: The address of the user publishing the content.
+ - Content-Location: The location of the content within the Web Contract.
+ - Range: Instead of `bytes=` used by HTTP, WTTP uses `chunks=`.
+
+All other headers are shared with HTTP.
+
+# Role-based Access Control
+
+WTTP provides role-based access control for managing permissions. This allows you to define roles (e.g., Admin, Publisher, Viewer) for specific users interacting with your WTTP Smart Contract.
+
+## Security Considerations
+
+- Private Keys: Always ensure that private keys are not exposed in public repositories or shared with others. Use environment variables to securely manage sensitive data.
+
+- Test Accounts: Use test accounts for development and testing purposes to avoid exposing your main account's private key to risk.
+
+# Conclusion
+
+The WTTP Handler provides a powerful and flexible client library for interacting with decentralized web resources hosted on Web Contracts. With its support for standard HTTP methods, advanced features like multi-part resources and range requests, and built-in role-based access control, WTTP enables the creation of fully decentralized websites and applications.

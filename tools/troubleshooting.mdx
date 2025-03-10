@@ -1,0 +1,80 @@
+# Troubleshooting WTTP
+
+If you encounter issues while using WTTP, this guide can help you diagnose and resolve common problems. For additional assistance, feel free to join our [Discord Community](https://discord.gg/bWSUeC5j) or contact us on Twitter at [@technicallyweb3](https://twitter.com/technicallyweb3).
+
+---
+
+## **Common Issues and Solutions**
+
+### **1. Cannot Deploy Contract**
+If deployment fails with an error message like `Invalid private key` or `Network not found`:
+- **Solution:**
+  - Ensure you are providing a valid private key.
+  - Verify your network settings. Supported networks include `sepolia`, `mainnet`, and `polygon`.
+
+---
+
+### **2. Error: "Resource Not Found"**
+If you encounter this error when trying to read a resource:
+- **Solution:**
+  - Confirm that the resource exists by listing all resources using the appropriate method in the WTTP handler.
+  - Ensure the correct resource URL is used when making requests to the contract.
+
+---
+
+### **3. MIME Type Errors**
+If the uploaded file has an incorrect or unsupported MIME type:
+- **Solution:**
+  - Ensure that the correct MIME type is specified when writing data to the storage. For example, use the `text/html` MIME type for HTML files.
+
+---
+
+### **4. Royalty Calculations Not Working**
+If royalties are not being calculated correctly when using the data point registry:
+- **Solution:**
+  - Ensure the data is written through the registry contract.
+  - Verify the royalty settings on your contract are configured correctly.
+
+---
+
+### **5. Gas Limit or Out of Gas Errors**
+If you receive errors related to gas limits during transactions:
+- **Solution:**
+  - Ensure that the gas limit is set appropriately and that your account has enough funds to cover the transaction cost.
+
+---
+
+### **6. Unable to Connect to the Network**
+If you encounter network connectivity issues:
+- **Solution:**
+  - Check your internet connection.
+  - Verify that your RPC endpoint is configured correctly for the selected network.
+
+---
+
+## **Debugging Tips**
+
+### Check Contract Logs
+Use the blockchain explorer (e.g., Etherscan, Polygonscan) to inspect your contract's transaction logs for any errors or issues.
+
+### Validate URLs
+Ensure all WTTP URLs follow the correct format:
+```plaintext
+wttp://<contract-address>/<resource-path>
+```
+
+### Still Need Help?
+
+If you are unable to resolve an issue:
+
+1. Review the WTTP Documentation.
+2. Join our Discord Community for real-time support.
+3. Reach out to us on Twitter at @technicallyweb3.
+
+Please provide detailed information about your issue, including:
+
+- The method or function you are using.
+- Any error messages received.
+- Your network settings and contract address.
+
+We’re here to help you make the most of WTTP!

@@ -1,0 +1,92 @@
+# Protocol Comparison
+
+This page provides a comparison between the Web3 Transfer Protocol (WTTP), EVM Storage Protocol, and traditional web protocols like HTTP. It highlights the unique features, advantages, and use cases of WTTP and EVM Storage Protocol, while contrasting them with widely-used HTTP standards.
+
+---
+
+## **Overview**
+
+| Feature                     | WTTP                          | EVM Storage Protocol          | HTTP                          |
+|-----------------------------|-------------------------------|--------------------------------|-------------------------------|
+| **Purpose**                 | Decentralized resource management and retrieval | Blockchain-based storage of web resources with royalty mechanisms | Standard web communication protocol |
+| **Content Addressing**      | Yes, hash-based addressing    | Yes, using DataPoint addresses| No, location-based addressing |
+| **Permission Control**      | Role-based access control     | Granular resource-level control | Minimal or application-specific |
+| **Royalties**               | Built-in royalty calculation  | Publisher royalties supported | Not applicable               |
+| **Caching**                 | Blockchain-supported metadata| Metadata-driven deduplication | HTTP headers like `Cache-Control` |
+| **Protocol Methods**        | `GET`, `PUT`, `PATCH`, etc.   | `writeData`, `readData`, etc. | `GET`, `POST`, `PUT`, etc.   |
+
+---
+
+## **Detailed Comparison**
+
+### **1. Storage Mechanism**
+
+- **WTTP**: Uses a decentralized storage model with resources broken into chunks stored as `DataPoints`. These are addressed using their hash, ensuring collision-resistant and deduplicated storage.
+- **EVM Storage Protocol**: Handles low-level storage of web resources directly on the blockchain. DataPoints are stored in a registry contract with metadata, supporting efficient retrieval and royalty mechanisms.
+- **HTTP**: Relies on centralized servers or Content Delivery Networks (CDNs) for resource storage. Files are accessed using location-based URLs.
+
+---
+
+### **2. Content Addressing**
+
+- **WTTP**: Supports content-addressed storage, where resource locations are determined by the content's hash. This ensures immutability and trust in data integrity.
+- **EVM Storage Protocol**: Utilizes the hash of metadata (version, MIME type, tags, etc.) and data itself to create a unique DataPoint address.
+- **HTTP**: Does not support content addressing; URLs point to server locations, which may change or become unavailable.
+
+---
+
+### **3. Permission System**
+
+- **WTTP**: Includes a comprehensive role-based permission system, allowing granular control over who can create, update, or delete resources.
+- **EVM Storage Protocol**: Implements resource-specific permissions with site admin capabilities and resource-level roles.
+- **HTTP**: Minimal or application-specific permissions (e.g., Basic Authentication, OAuth).
+
+---
+
+### **4. Royalties and Incentives**
+
+- **WTTP**: Introduces a gas-based royalty system where publishers earn a share of fees when their resources are reused. A portion (10%) is allocated to TW3 fees.
+- **EVM Storage Protocol**: Includes built-in royalty calculations for resources written to the DataPoint Registry.
+- **HTTP**: Does not have any built-in royalty or incentive mechanisms.
+
+---
+
+### **5. Protocol Methods**
+
+| Method        | WTTP            | EVM Storage Protocol       | HTTP            |
+|---------------|-----------------|----------------------------|-----------------|
+| **GET**       | Retrieve resources | Read data from storage   | Retrieve resources |
+| **PUT**       | Create/replace resources | Write data to registry | Store/replace resources |
+| **PATCH**     | Update parts of resources | -                    | Update parts of resources |
+| **HEAD**      | Fetch resource metadata | -                    | Fetch metadata   |
+| **LOCATE**    | Get resource location | -                      | Not available    |
+| **DELETE**    | Delete resources | -                         | Remove resources |
+
+---
+
+## **Performance Metrics**
+
+| Metric                      | WTTP                          | EVM Storage Protocol          | HTTP                          |
+|-----------------------------|-------------------------------|--------------------------------|-------------------------------|
+| **Average Write Time**      | ~23ms per chunk               | ~23ms per chunk               | Depends on server latency    |
+| **Average Read Time**       | ~24ms per chunk               | ~24ms per chunk               | Depends on server latency    |
+| **Maximum File Size Tested**| 10MB                          | 10MB                          | No practical limit           |
+
+---
+
+## **Advantages of WTTP and EVM Storage Protocol**
+
+1. **Decentralization**: No reliance on centralized servers, ensuring higher resilience and censorship resistance.
+2. **Content Integrity**: Content addressing guarantees that data remains immutable and trustworthy.
+3. **Built-in Incentives**: Royalties encourage publishers and maintainers to contribute content.
+4. **Granular Permissions**: Role-based access control ensures secure resource management.
+5. **Interoperability**: WTTP can coexist with existing HTTP protocols, enabling seamless adoption.
+
+---
+
+## **Conclusion**
+
+While HTTP remains the standard for traditional web applications, WTTP and EVM Storage Protocol provide robust alternatives for decentralized and blockchain-based applications. These protocols introduce unique features like content-addressed storage, royalties, and decentralized permissions, making them ideal for Web3 use cases.
+
+For developers looking to build resilient, trustless, and incentivized systems, WTTP and EVM Storage Protocol offer significant advantages over traditional HTTP.
+

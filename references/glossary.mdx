@@ -1,0 +1,66 @@
+# Glossary
+
+This glossary defines key terms and concepts used throughout the WTTP (Web3 Transfer Protocol) and EVM Storage Protocol documentation.
+
+---
+
+### **Blockchain**
+A distributed ledger technology that records transactions across many computers in a way that ensures the data is secure and cannot be altered retroactively.
+
+### **DataPoint**
+An atomic unit of storage within the EVM Storage Protocol. Each DataPoint consists of metadata, a hash-based address, and the actual data.
+
+### **DataPoint Address**
+A unique address for a DataPoint, calculated using the hash of metadata such as `version`, `mime type`, `tags`, and `data`.
+
+### **DataPoint Registry**
+A smart contract within the EVM Storage Protocol that manages DataPoints and calculates royalties for their use.
+
+### **EVM (Ethereum Virtual Machine)**
+The runtime environment for smart contracts on Ethereum and compatible blockchains.
+
+### **EVM Storage Protocol**
+A blockchain-based protocol that defines storage and retrieval of web resources through the use of DataPoints and registries. It provides a mechanism for royalty-based content storage.
+
+### **Get Function**
+A function in the WTTP Protocol used to retrieve resource headers, locations, and the associated content from the blockchain.
+
+### **Header**
+Metadata associated with a resource, including information like `Content-Type`, `Charset`, and other control directives.
+
+### **Mime Type**
+A standard that indicates the nature and format of a file (e.g., `text/html` for HTML files, `image/png` for PNG images).
+
+### **Permission System**
+A role-based access control system in WTTP that defines who can perform certain actions on stored resources.
+
+### **Resource**
+A composite data structure in WTTP that consists of headers, metadata, and content. Resources are addressed using WTTP's content-addressing mechanisms.
+
+### **Royalties**
+Gas-based fees distributed to publishers for their content contributions. Royalties are calculated automatically based on data reuse.
+
+### **WTTP (Web3 Transfer Protocol)**
+A decentralized protocol that mirrors HTTP functionality for blockchain-based resources, supporting operations like `GET`, `PUT`, `PATCH`, and more.
+
+### **WTTP Permissions Contract**
+A smart contract in the WTTP Protocol that defines access control and permissions for resources.
+
+### **WTTP Storage Contract**
+A smart contract responsible for managing storage operations, including creating, updating, deleting, and retrieving resources.
+
+### **WTTP Methods**
+The core operations supported by WTTP, such as:
+
+- **GET**: Retrieve resource data.
+- **PUT**: Store or replace resources.
+- **PATCH**: Update partial data.
+- **HEAD**: Fetch resource metadata.
+- **LOCATE**: Identify resource location.
+
+### **WTTP Version**
+The current version of the WTTP Protocol, ensuring compatibility across different implementations.
+
+---
+
+If you have suggestions for additional terms to include in this glossary, please let us know!
