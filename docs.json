@@ -1,13 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "maple",
   "name": "WTTP Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#01ABED",
+    "light": "#01ABED",
+    "dark": "#01ABED"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "logo.png",
   "navigation": {
     "tabs": [
       {
