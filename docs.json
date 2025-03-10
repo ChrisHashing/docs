@@ -14,15 +14,17 @@
         "tab": "Home",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Welcome",
             "pages": [
               "introduction"
             ]
           },
           {
-            "group": "Get Started2",
+            "group": "Get Started",
             "pages":[
-              "introductions/overview"
+              "introductions/overview",
+              "introductions/features",
+              "introductions/use_cases"
             ]
           },
           {
